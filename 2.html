@@ -110,7 +110,7 @@
         <div class="diagram-title">Fig 1: Root Cause Analysis Fishbone Diagram (Ishikawa)</div>
         mindmap
           root((Land Acquisition Delays))
-            Legal & Judicial
+            "Legal and Judicial"
               High Court Injunctions
               Pending Writ Petitions
               Title Disputes
@@ -118,7 +118,7 @@
               Outdated Land Records
               Forest Clearances Pending
               Inter-department Latency
-            Social & Political
+            "Social and Political"
               Gram Sabha Objections
               R&R Package Disputes
               Protests
@@ -176,7 +176,7 @@
             end
 
             subgraph AI/ML Engine
-                ML[XGBoost & Survival Models]
+                ML[XGBoost and Survival Models]
                 XAI[SHAP Explainer]
                 Mitigation[Rule-Based Mitigation Engine]
             end
@@ -308,7 +308,7 @@
         stateDiagram-v2
             [*] --> IngestData
             IngestData --> ML_Engine : Daily Sync
-            ML_Engine --> SHAP_Explainer : Predict Delay > 70%
+            ML_Engine --> SHAP_Explainer : Predict Delay over 70 percent
             SHAP_Explainer --> RulesEngine : Top Driver Identified
             
             state RulesEngine {
@@ -401,7 +401,7 @@
             title 12-Month Implementation Roadmap
             dateFormat  YYYY-MM-DD
             section Phase 1: Pilot
-            Data Synth & Schema Design :a1, 2026-01-01, 30d
+            Data Synth and Schema Design :a1, 2026-01-01, 30d
             Deploy in 2 Pilot Districts :a2, after a1, 60d
             section Phase 2: State-wide
             Model Training on State Data :a3, after a2, 45d
