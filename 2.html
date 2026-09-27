@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>SIH26017 Technical Report - Team Recursion</title>
-    <!-- Mermaid JS for diagrams -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true});</script>
     <style>
         @page {
             size: A4;
@@ -36,8 +33,6 @@
         code { font-family: "Courier New", Courier, monospace; font-size: 9.5pt; background: #f0f0f0; padding: 2px 5px; border-radius: 3px; }
         .page-break { page-break-after: always; }
         .equation { text-align: center; font-style: italic; font-weight: bold; font-family: "Courier New", Courier, monospace; margin: 20px 0; font-size: 11pt; padding: 10px; background: #fdfdfd; border: 1px dashed #aaa; }
-        .mermaid { text-align: center; margin: 20px 0; background: #fcfcfc; padding: 15px; border: 1px solid #e0e0e0; page-break-inside: avoid;}
-        .diagram-title { text-align: center; font-weight: bold; margin-bottom: 10px; font-family: Arial, sans-serif; font-size: 11pt; }
     </style>
 </head>
 <body>
@@ -105,27 +100,6 @@
         <li><strong>Inter-departmental Latency:</strong> Lack of real-time API integrations between PFMS (Public Financial Management System), MoEFCC (Forest Clearance), and State Revenue portals creates massive administrative dead-time.</li>
         <li><strong>Rehabilitation & Resettlement (R&R) Friction:</strong> Severe resistance from displaced Gram Sabhas during joint measurement surveys, often escalating into civil unrest.</li>
     </ul>
-    
-    <div class="mermaid">
-        <div class="diagram-title">Fig 1: Root Cause Analysis Fishbone Diagram (Ishikawa)</div>
-        mindmap
-          root((Land Acquisition Delays))
-            "Legal and Judicial"
-              High Court Injunctions
-              Pending Writ Petitions
-              Title Disputes
-            Administrative
-              Outdated Land Records
-              Forest Clearances Pending
-              Inter-department Latency
-            "Social and Political"
-              Gram Sabha Objections
-              "R and R Package Disputes"
-              Protests
-            Financial
-              Fund Disbursement Bottlenecks
-              PFMS Sync Issues
-    </div>
 
     <!-- 3. PROPOSED SOLUTION & CORE INNOVATION -->
     <h1 class="section-title">3. Proposed Solution &amp; Core Innovation</h1>
@@ -154,59 +128,26 @@
         <li><strong>Bhuvan / Spatial DBs:</strong> Cadastral GeoJSON layers and forest boundary intersections.</li>
     </ul>
 
-    <h2>4.2 High-Level System Architecture Diagram</h2>
-    <div class="mermaid">
-        <div class="diagram-title">Fig 2: Microservices System Architecture</div>
-        graph TD
-            subgraph Data Sources
-                LR[State Land Records]
-                EC[eCourts Portal]
-                PFMS[PFMS APIs]
-                GIS[Bhuvan GIS Data]
-            end
+    <h2>4.2 High-Level System Architecture Flow</h2>
+    <pre>
+[LEVEL 0: CONTEXT]
+STATE PORTALS (Bhulekh, eCourts, PFMS)  ---> [ LandGuard AI Core ] ---> DISTRICT COLLECTOR / MO-RD
+(Raw Ownership, Court Stays, Finance)                                   (Risk Alerts, Heatmaps, Playbook)
 
-            subgraph Ingestion Layer
-                Kafka[Apache Kafka Queue]
-                ETL[Apache Spark ETL]
-            end
-
-            subgraph Processing & Storage
-                DB[(PostgreSQL and PostGIS)]
-                Redis[(Redis Cache)]
-            end
-
-            subgraph AI/ML Engine
-                ML[XGBoost and Survival Models]
-                XAI[SHAP Explainer]
-                Mitigation[Rule-Based Mitigation Engine]
-            end
-
-            subgraph API Gateway & Microservices
-                FastAPI[FastAPI Backend]
-                Celery[Celery Async Workers]
-            end
-
-            subgraph Presentation Layer
-                WebUI[Next.js Dashboard]
-                Leaflet[Leaflet GIS Viewer]
-            end
-
-            LR --> Kafka
-            EC --> Kafka
-            PFMS --> Kafka
-            GIS --> Kafka
-            Kafka --> ETL
-            ETL --> DB
-            DB --> ML
-            ML --> XAI
-            XAI --> Mitigation
-            Mitigation --> DB
-            DB <--> FastAPI
-            FastAPI <--> Redis
-            FastAPI --> Celery
-            FastAPI <--> WebUI
-            DB -.-> Leaflet
-    </div>
+[LEVEL 1: COMPONENT ARCHITECTURE]
++--------------------------+     +--------------------------+     +--------------------------+
+| 1. DATA INGESTION LAYER  |     | 2. FEATURE PIPELINE      |     | 3. ML INFERENCE ENGINE   |
+| - REST API Gateways      | --> | - Pandas / Spark ETL     | --> | - XGBoost Classifiers    |
+| - Celery Async Tasks     |     | - Spatial Joins (PostGIS)|     | - Cox Survival Models    |
+| - Apache Kafka Streams   |     | - Missing Value Imputer  |     | - SHAP Explainer         |
++--------------------------+     +--------------------------+     +--------------------------+
+                                                                             |
++--------------------------+     +--------------------------+                |
+| 5. PRESENTATION TIER     |     | 4. MITIGATION ENGINE     | <--------------+
+| - Next.js Web Dashboard  | <-- | - Rules-based Expert Sys |
+| - Leaflet.js GIS Engine  |     | - SLA Tracker            |
++--------------------------+     +--------------------------+
+    </pre>
 
     <!-- 5. AI/ML METHODOLOGY & ALGORITHMIC FORMULATIONS -->
     <h1 class="section-title">5. AI/ML Methodology &amp; Algorithmic Formulations</h1>
@@ -303,25 +244,6 @@
     <h1 class="section-title">9. Risk Mitigation Playbook &amp; Interventions</h1>
     <p>The system does not just identify problems; it maps predictive drivers directly to actionable, statutory remediations, effectively serving as an expert legal assistant for the CALA.</p>
 
-    <div class="mermaid">
-        <div class="diagram-title">Fig 3: Automated Mitigation Workflow</div>
-        stateDiagram-v2
-            [*] --> IngestData
-            IngestData --> ML_Engine : Daily Sync
-            ML_Engine --> SHAP_Explainer : Predict Delay over 70 percent
-            SHAP_Explainer --> RulesEngine : Top Driver Identified
-            
-            state RulesEngine {
-                TitleDispute --> Action1 : Schedule Revenue Camp
-                Litigation --> Action2 : Alert Govt Counsel
-                StatutoryLapse --> Action3 : Trigger Escalate to DM
-            }
-            
-            RulesEngine --> GenerateNotice : Draft Official Notice
-            GenerateNotice --> DispatchAlert : SMS and Email
-            DispatchAlert --> [*]
-    </div>
-
     <table class="data-table">
         <tr>
             <th>Identified Bottleneck (SHAP Output)</th>
@@ -354,65 +276,14 @@
     <h1 class="section-title">10. Implementation Roadmap, Feasibility &amp; DB Schema</h1>
     <p>The proposed system is highly feasible given the current digitization thrust of the Digital India Land Records Modernization Programme (DILRMP).</p>
     
-    <h3>Database ER Diagram (Core Modules)</h3>
-    <div class="mermaid">
-        <div class="diagram-title">Fig 4: Entity Relationship Diagram (ERD)</div>
-        erDiagram
-            PROJECTS ||--o{ STAGE_STATUS : tracks
-            PROJECTS ||--o{ LITIGATIONS : involves
-            PROJECTS ||--o{ MODEL_PREDICTIONS : generates
-            MODEL_PREDICTIONS ||--o{ PRESCRIPTIVE_ACTIONS : triggers
-
-            PROJECTS {
-                UUID project_id PK
-                string project_code
-                string state
-                float total_area_ha
-                geometry geom
-            }
-            STAGE_STATUS {
-                UUID status_id PK
-                string stage_code
-                date planned_date
-                date actual_date
-                boolean is_blocked
-            }
-            LITIGATIONS {
-                UUID lit_id PK
-                string court_forum
-                boolean stay_active
-            }
-            MODEL_PREDICTIONS {
-                UUID pred_id PK
-                float delay_prob
-                json shap_summary
-            }
-            PRESCRIPTIVE_ACTIONS {
-                UUID action_id PK
-                string directive
-                int target_sla_days
-            }
-    </div>
-
-    <h3>4-Phase Implementation Gantt</h3>
-    <div class="mermaid">
-        <div class="diagram-title">Fig 5: 12-Month Rollout Gantt Chart</div>
-        gantt
-            title 12-Month Implementation Roadmap
-            dateFormat  YYYY-MM-DD
-            section Phase 1: Pilot
-            Data Synth and Schema Design :a1, 2026-01-01, 30d
-            Deploy in 2 Pilot Districts :a2, after a1, 60d
-            section Phase 2: State-wide
-            Model Training on State Data :a3, after a2, 45d
-            State-wide UI Rollout :a4, after a3, 45d
-            section Phase 3: Integration
-            Live API Sync :a5, after a4, 90d
-            section Phase 4: Federation
-            Multi-State Federation :a6, after a5, 60d
-            Handover to NIC Cloud :a7, after a6, 30d
-    </div>
-
+    <h3>4-Phase Implementation Rollout Plan</h3>
+    <ul>
+        <li><strong>Phase 1 (Months 0-3):</strong> Data synthesis and schema design. Pilot deployment in 2 high-volume districts. Integration with static CSV extracts.</li>
+        <li><strong>Phase 2 (Months 4-6):</strong> State-wide expansion. Training the ML models on state-specific historical timelines. State-wide UI rollout.</li>
+        <li><strong>Phase 3 (Months 7-9):</strong> Live API synchronization with state Bhulekh portals and eCourts.</li>
+        <li><strong>Phase 4 (Months 10-12):</strong> Multi-state federation and handover to NIC (National Informatics Centre) for sovereign cloud hosting.</li>
+    </ul>
+    
     <p><strong>Security & Compliance:</strong> All Personal Identifiable Information (PII) regarding landowners will be masked at the application layer. Data will be encrypted in transit (TLS 1.3) and at rest (AES-256), strictly adhering to the Digital Personal Data Protection (DPDP) Act 2023.</p>
 
     <!-- 11. TEAM RECURSION EXPERTISE & ROLE MATRIX -->
