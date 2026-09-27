@@ -120,7 +120,7 @@
               Inter-department Latency
             "Social and Political"
               Gram Sabha Objections
-              R&R Package Disputes
+              "R and R Package Disputes"
               Protests
             Financial
               Fund Disbursement Bottlenecks
@@ -166,12 +166,12 @@
             end
 
             subgraph Ingestion Layer
-                Kafka[Apache Kafka / Message Queue]
+                Kafka[Apache Kafka Queue]
                 ETL[Apache Spark ETL]
             end
 
             subgraph Processing & Storage
-                DB[(PostgreSQL + PostGIS)]
+                DB[(PostgreSQL and PostGIS)]
                 Redis[(Redis Cache)]
             end
 
@@ -318,7 +318,7 @@
             }
             
             RulesEngine --> GenerateNotice : Draft Official Notice
-            GenerateNotice --> DispatchAlert : SMS/Email
+            GenerateNotice --> DispatchAlert : SMS and Email
             DispatchAlert --> [*]
     </div>
 
@@ -407,7 +407,7 @@
             Model Training on State Data :a3, after a2, 45d
             State-wide UI Rollout :a4, after a3, 45d
             section Phase 3: Integration
-            Live API Sync (Bhulekh/eCourts):a5, after a4, 90d
+            Live API Sync :a5, after a4, 90d
             section Phase 4: Federation
             Multi-State Federation :a6, after a5, 60d
             Handover to NIC Cloud :a7, after a6, 30d
